@@ -1,0 +1,23 @@
+GOOD-1
+H 18 100
+S 26 120
+V 147 255
+median-blur-ksize 64
+
+GOOD-2
+H 50 180
+S 87 255
+V 170 255
+median-blur-ksize 70
+
+MEDIUM-3
+H 0 33
+S 0 37
+V 53 203
+median-blur-ksize 51
+
+BAD
+H 51 143
+S 89 255
+V 61 241
+median-blur-ksize 64

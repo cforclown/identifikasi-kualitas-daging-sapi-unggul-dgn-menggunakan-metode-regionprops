@@ -10,6 +10,20 @@
       "request": "launch",
       "program": "${workspaceFolder}/main.py",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "DEBUG: trainer",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/trainer.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "DEBUG: realtime-trainer",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/realtime-trainer.py",
+      "console": "integratedTerminal"
     }
   ]
 }
