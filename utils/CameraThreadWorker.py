@@ -75,7 +75,13 @@ class CameraThreadWorker(QThread):
                     )
                     if contour is not None:
                         x, y, w, h = cv2.boundingRect(contour)
-                        cv2.rectangle(rawFrame, (x, y), (x + w, y + h), (75, 255, 75), 2)
+                        cv2.rectangle(
+                            rawFrame, 
+                            (self.roi.x+x, self.roi.y+y), 
+                            (self.roi.x + x + w, self.roi.y + y + h), 
+                            (75, 255, 75), 
+                            2
+                        )
                         self.meatDetected.emit(True)
                     else:
                         self.meatDetected.emit(False)

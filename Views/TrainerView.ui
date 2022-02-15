@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>732</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>732</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>900</width>
+    <height>732</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>900</width>
+     <height>732</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>900</width>
+     <height>732</height>
+    </size>
+   </property>
+   <widget class="QFrame" name="sliderFrame">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>8</y>
+      <width>512</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>-1</y>
+       <width>511</width>
+       <height>301</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="sliderLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="lowHFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="lowHSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowHText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Low H</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowHValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="highHFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="highHSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highHText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>High H</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highHValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="separator1">
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>4</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="lowSFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="lowSSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowSText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Low S</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowSValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="highSFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="highSSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highSText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>High S</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highSValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="separator2">
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>4</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="lowVFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="lowVSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowVText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Low V</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lowVValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="highVFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="highVSlider">
+         <property name="geometry">
+          <rect>
+           <x>72</x>
+           <y>0</y>
+           <width>431</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highVText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>48</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>High V</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="highVValueText">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>0</y>
+           <width>24</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="separator1_2">
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>4</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="lowVFrame_2">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QSlider" name="enhanceParamSlider">
+         <property name="geometry">
+          <rect>
+           <x>142</x>
+           <y>0</y>
+           <width>361</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="enhanceParamText">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>101</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Enhance Parameter</string>
+         </property>
+         <property name="margin">
+          <number>4</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="enhanceParamValueText">
+         <property name="geometry">
+          <rect>
+           <x>118</x>
+           <y>0</y>
+           <width>31</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="image">
+    <property name="geometry">
+     <rect>
+      <x>528</x>
+      <y>8</y>
+      <width>361</width>
+      <height>232</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../Resources/Templates/template-2.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageBinary">
+    <property name="geometry">
+     <rect>
+      <x>528</x>
+      <y>248</y>
+      <width>361</width>
+      <height>232</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../Resources/Templates/template-3.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageBinaryEnhanced">
+    <property name="geometry">
+     <rect>
+      <x>528</x>
+      <y>488</y>
+      <width>361</width>
+      <height>232</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../Resources/Templates/template-3.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QListView" name="savedParamsListView">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>421</y>
+      <width>511</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>680</y>
+      <width>511</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>511</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="controlLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>8</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="savedParamsText">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>380</y>
+      <width>511</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Saved Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="margin">
+     <number>4</number>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>320</y>
+      <width>511</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>511</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="controlLayout_4">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>8</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="pushButton_11">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_12">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_13">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
