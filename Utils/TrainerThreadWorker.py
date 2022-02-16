@@ -40,61 +40,34 @@ class TrainerThreadWorker(QThread):
             try:
                 img, imgBin, imgBinEnhanced, contours = self.process()
                 for contour in contours:
-                    cv2.rectangle(
-                        self.img, 
-                        (self.roi.x, self.roi.y), 
-                        (self.roi.x+self.roi.w, self.roi.y+self.roi.h), 
-                        (75, 75, 255), 
-                        2
-                    )
-                if contour is not None:
                     x, y, w, h = cv2.boundingRect(contour)
                     cv2.rectangle(
-                        rawFrame, 
-                        (self.roi.x+x, self.roi.y+y), 
-                        (self.roi.x + x + w, self.roi.y + y + h), 
+                        img, 
+                        (x, y), 
+                        (x+w, y+h), 
                         (75, 255, 75), 
                         2
                     )
-                    self.meatDetected.emit(True)
-                else:
-                    self.meatDetected.emit(False)
-                if not self.verboseMode:
-                    # filtered = np.asarray(filtered)
-                    # rawFrame[ 
-                    #     self.roi.y:self.roi.y+self.roi.h, 
-                    #     self.roi.x:self.roi.x+self.roi.w
-                    # ] = filtered
-                    frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
-                    self.currentFrame=frame
-                    frameQtFormat = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-                    self.frameUpdate.emit(frameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                else:
-                    frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
-                    self.currentFrame=frame
-                    frameQtFormat = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+                img = cv2.flip(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 1)
+                imgQtFormat = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888)
 
-                    roi = np.asarray(roi)
-                    roiFrame = cv2.flip(cv2.cvtColor(roi, cv2.COLOR_BGR2RGB), 1)
-                    roiFrameQtFormat = QImage(roiFrame.data, roiFrame.shape[1], roiFrame.shape[0], QImage.Format_RGB888)
+                imgBin = np.asarray(imgBin)
+                imgBin = cv2.flip(cv2.cvtColor(imgBin, cv2.COLOR_BGR2RGB), 1)
+                imgBinQtFormat = QImage(imgBin.data, imgBin.shape[1], imgBin.shape[0], QImage.Format_RGB888)
 
-                    mask = np.asarray(mask)
-                    maskFrame = cv2.flip(cv2.cvtColor(mask, cv2.COLOR_BGR2RGB), 1)
-                    maskFrameQtFormat = QImage(maskFrame.data, maskFrame.shape[1], maskFrame.shape[0], QImage.Format_RGB888)
-
-                    rawFrame[
-                        self.roi.y:self.roi.y+self.roi.h,
-                        self.roi.x:self.roi.x+self.roi.w
-                    ] = filtered
-                    filtered = np.asarray(filtered)
-                    filteredFrame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
-                    filteredFrameQtFormat = QImage(filteredFrame.data, filteredFrame.shape[1], filteredFrame.shape[0], QImage.Format_RGB888)
+                mask = np.asarray(mask)
+                maskFrame = cv2.flip(cv2.cvtColor(mask, cv2.COLOR_BGR2RGB), 1)
+                maskFrameQtFormat = QImage(maskFrame.data, maskFrame.shape[1], maskFrame.shape[0], QImage.Format_RGB888)
+                
+                filtered = np.asarray(filtered)
+                filteredFrame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
+                filteredFrameQtFormat = QImage(filteredFrame.data, filteredFrame.shape[1], filteredFrame.shape[0], QImage.Format_RGB888)
 
 
-                    self.frameUpdate.emit(frameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                    self.roiUpdate.emit(roiFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                    self.roiMaskUpdate.emit(maskFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                    self.filteredUpdate.emit(filteredFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                self.frameUpdate.emit(imgQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                self.roiUpdate.emit(imgBinQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                self.roiMaskUpdate.emit(maskFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                self.filteredUpdate.emit(filteredFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
             except Exception as e:
                 print(traceback.format_exc())
 
