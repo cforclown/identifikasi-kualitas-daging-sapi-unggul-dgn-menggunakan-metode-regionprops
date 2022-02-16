@@ -2,6 +2,8 @@ from __future__ import print_function
 import cv2
 import argparse
 
+from Utils.CameraSettings import CAMERA_SETTINGS
+
 maxValueNSaturation = 255
 maxHue = 360//2
 
@@ -83,7 +85,7 @@ cv2.createTrackbar(highValueTrackbarName, detectionWindow , highValue, maxValueN
 cv2.namedWindow(enhancedDetectionWindow)
 cv2.createTrackbar(enhancedScaleName, enhancedDetectionWindow , enhancedScale, 99, onEnhancedValueTrackbar)
 
-capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+capture = cv2.VideoCapture(CAMERA_SETTINGS.INDEX, cv2.CAP_DSHOW)
 if capture.isOpened(): 
     # get vcap property 
     cameraResWidth  = capture.get(cv2.CAP_PROP_FRAME_WIDTH)

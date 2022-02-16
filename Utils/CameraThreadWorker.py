@@ -7,6 +7,9 @@ from PySide2.QtGui import QImage
 import cv2
 import numpy as np
 
+from Utils.CameraSettings import CAMERA_SETTINGS
+
+
 
 class MEATQUALITY(Enum):
     GOOD=1
@@ -52,7 +55,7 @@ class CameraThreadWorker(QThread):
     def run(self):
         self.isActive=True
         self.isPause=False
-        capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        capture = cv2.VideoCapture(CAMERA_SETTINGS.INDEX, cv2.CAP_DSHOW)
         if capture.isOpened(): 
             # get vcap property 
             self.cameraResWidth  = capture.get(cv2.CAP_PROP_FRAME_WIDTH)

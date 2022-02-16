@@ -4,6 +4,7 @@ from PySide2.QtCore import QEvent, QCoreApplication
 from Utils.CameraThreadWorker import MEATQUALITY, CameraThreadWorker
 from Views.MainView import Ui_MainView
 
+
 class View(QMainWindow):
   lastWindowEvent=None
 

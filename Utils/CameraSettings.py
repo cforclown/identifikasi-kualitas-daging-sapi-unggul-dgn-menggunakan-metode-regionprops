@@ -1,0 +1,3 @@
+class CAMERA_SETTINGS:
+  INDEX=1
+

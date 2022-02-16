@@ -55,19 +55,13 @@ class TrainerThreadWorker(QThread):
                 imgBin = cv2.flip(cv2.cvtColor(imgBin, cv2.COLOR_BGR2RGB), 1)
                 imgBinQtFormat = QImage(imgBin.data, imgBin.shape[1], imgBin.shape[0], QImage.Format_RGB888)
 
-                mask = np.asarray(mask)
-                maskFrame = cv2.flip(cv2.cvtColor(mask, cv2.COLOR_BGR2RGB), 1)
-                maskFrameQtFormat = QImage(maskFrame.data, maskFrame.shape[1], maskFrame.shape[0], QImage.Format_RGB888)
-                
-                filtered = np.asarray(filtered)
-                filteredFrame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
-                filteredFrameQtFormat = QImage(filteredFrame.data, filteredFrame.shape[1], filteredFrame.shape[0], QImage.Format_RGB888)
+                imgBinEnhanced = np.asarray(imgBinEnhanced)
+                imgBinEnhanced = cv2.flip(cv2.cvtColor(imgBinEnhanced, cv2.COLOR_BGR2RGB), 1)
+                imgBinEnhancedQtFormat = QImage(imgBinEnhanced.data, imgBinEnhanced.shape[1], imgBinEnhanced.shape[0], QImage.Format_RGB888)
 
-
-                self.frameUpdate.emit(imgQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                self.roiUpdate.emit(imgBinQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                self.roiMaskUpdate.emit(maskFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                self.filteredUpdate.emit(filteredFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                self.imgUpdate.emit(imgQtFormat.scaled(900, 600, Qt.KeepAspectRatio))
+                self.imgBinUpdate.emit(imgBinQtFormat.scaled(900, 600, Qt.KeepAspectRatio))
+                self.imgBinEnhancedUpdate.emit(imgBinEnhancedQtFormat.scaled(900, 600, Qt.KeepAspectRatio))
             except Exception as e:
                 print(traceback.format_exc())
 
