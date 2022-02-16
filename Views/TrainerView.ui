@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>TrainerView</class>
+ <widget class="QMainWindow" name="TrainerView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -427,19 +427,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="lowVFrame_2">
+       <widget class="QFrame" name="noiseReductionParam">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QSlider" name="enhanceParamSlider">
+        <widget class="QSlider" name="noiseReductionParamSlider">
          <property name="geometry">
           <rect>
-           <x>142</x>
+           <x>152</x>
            <y>0</y>
-           <width>361</width>
+           <width>351</width>
            <height>24</height>
           </rect>
          </property>
@@ -447,28 +447,28 @@
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLabel" name="enhanceParamText">
+        <widget class="QLabel" name="noiseReductionParamText">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>101</width>
+           <width>121</width>
            <height>24</height>
           </rect>
          </property>
          <property name="text">
-          <string>Enhance Parameter</string>
+          <string>Noise Reduction Param</string>
          </property>
          <property name="margin">
           <number>4</number>
          </property>
         </widget>
-        <widget class="QLabel" name="enhanceParamValueText">
+        <widget class="QLabel" name="noiseReductionParamValueText">
          <property name="geometry">
           <rect>
-           <x>118</x>
+           <x>128</x>
            <y>0</y>
-           <width>31</width>
+           <width>21</width>
            <height>24</height>
           </rect>
          </property>
@@ -542,17 +542,17 @@
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>421</y>
+      <y>401</y>
       <width>511</width>
-      <height>241</height>
+      <height>191</height>
      </rect>
     </property>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="listControlFrame">
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>680</y>
+      <y>600</y>
       <width>511</width>
       <height>41</height>
      </rect>
@@ -572,7 +572,7 @@
        <height>41</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="controlLayout">
+     <layout class="QHBoxLayout" name="listControlLayout">
       <property name="spacing">
        <number>8</number>
       </property>
@@ -583,23 +583,36 @@
        <number>8</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="saveListToJSONBtn">
         <property name="text">
-         <string>PushButton</string>
+         <string> Save to JSON</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/code.png</normaloff>Resources/code.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="removeParamsBtn">
         <property name="text">
-         <string>PushButton</string>
+         <string> Remove</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>PushButton</string>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/delete-button.png</normaloff>Resources/delete-button.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -610,7 +623,7 @@
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>380</y>
+      <y>370</y>
       <width>511</width>
       <height>31</height>
      </rect>
@@ -622,11 +635,11 @@
      <number>4</number>
     </property>
    </widget>
-   <widget class="QFrame" name="frame_2">
+   <widget class="QFrame" name="paramsControlFrame">
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>320</y>
+      <y>310</y>
       <width>511</width>
       <height>41</height>
      </rect>
@@ -646,7 +659,7 @@
        <height>41</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="controlLayout_4">
+     <layout class="QHBoxLayout" name="paramsControlLayout">
       <property name="spacing">
        <number>8</number>
       </property>
@@ -657,23 +670,30 @@
        <number>8</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_11">
+       <widget class="QPushButton" name="saveParamsBtn">
         <property name="text">
-         <string>PushButton</string>
+         <string> Save</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/arrow-down.png</normaloff>Resources/arrow-down.png</iconset>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_12">
+       <widget class="QPushButton" name="changeImgBtn">
         <property name="text">
-         <string>PushButton</string>
+         <string> Change Image</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_13">
-        <property name="text">
-         <string>PushButton</string>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/upload.png</normaloff>Resources/upload.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>

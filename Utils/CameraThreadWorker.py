@@ -1,12 +1,17 @@
 import os
 import traceback
+from enum import Enum
 from datetime import datetime
-from xml.dom.minidom import TypeInfo
 from PySide2.QtCore import Qt, QThread, Signal
 from PySide2.QtGui import QImage
 import cv2
 import numpy as np
 
+
+class MEATQUALITY(Enum):
+    GOOD=1
+    MEDIUM=0
+    BAD=-1
 
 class ROI:
     def __init__(self, x, y, w, h):

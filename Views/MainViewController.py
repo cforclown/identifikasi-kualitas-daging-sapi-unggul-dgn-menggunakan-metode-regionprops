@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QMainWindow
 from PySide2.QtGui import QPixmap, QCloseEvent, QShowEvent
 from PySide2.QtCore import QEvent, QCoreApplication
-from Utils.CameraThreadWorker import CameraThreadWorker
+from Utils.CameraThreadWorker import MEATQUALITY, CameraThreadWorker
 from Views.MainView import Ui_MainView
 
 class View(QMainWindow):
@@ -18,17 +18,23 @@ class View(QMainWindow):
     self.show()
 
   def initialize(self):
+    self.ui.videoOutpuFrame.setScaledContents(True)
+    self.ui.videoFrame.setScaledContents(True)
+    self.ui.roiFrame.setScaledContents(True)
+    self.ui.roiMaskFrame.setScaledContents(True)
+    self.ui.videoFilteredFrame.setScaledContents(True)
+
+    self.ui.startVideoBtn.clicked.connect(self.onResumeCamera)
+    self.ui.pauseVideoBtn.clicked.connect(self.onPauseCamera)
+    self.ui.screenshootBtn.clicked.connect(self.onScreenshoot)
+    self.ui.videoModeCb.currentTextChanged.connect(self.onModeChange)
+
     self.cameraThread = CameraThreadWorker()
     self.cameraThread.frameUpdate.connect(self.imageUpdateCallback)
     self.cameraThread.roiUpdate.connect(self.roiUpdateCallback)
     self.cameraThread.roiMaskUpdate.connect(self.roiMaskUpdateCallback)
     self.cameraThread.filteredUpdate.connect(self.videoFilteredUpdateCallback)
     self.cameraThread.meatDetected.connect(self.meatDetected)
-
-    self.ui.startVideoBtn.clicked.connect(self.onResumeCamera)
-    self.ui.pauseVideoBtn.clicked.connect(self.onPauseCamera)
-    self.ui.screenshootBtn.clicked.connect(self.onScreenshoot)
-    self.ui.videoModeCb.currentTextChanged.connect(self.onModeChange)
   
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
@@ -71,13 +77,30 @@ class View(QMainWindow):
   def videoFilteredUpdateCallback(self, frame):
     self.ui.videoFilteredFrame.setPixmap(QPixmap.fromImage(frame))
   
-  def meatDetected(self, isDetected):
+  def meatDetected(self, isDetected, quality=MEATQUALITY.GOOD):
     if isDetected:
-      self.ui.detectionIndikatorLayout.show()
-      self.ui.meatQualityText.setText(QCoreApplication.translate("MainView", u"<html><head/><body><p><span style=\" font-weight:600; color:#00e800;\">BAIK</span></p></body></html>", None))
+      self.ui.detectionIndicatorFrame.show()
+      if quality is MEATQUALITY.GOOD:
+        self.ui.goodTextFrame.show()
+        self.ui.mediumText.hide()
+        self.ui.badTextFrame.hide()
+      elif quality is MEATQUALITY.MEDIUM:
+        self.ui.goodTextFrame.hide()
+        self.ui.mediumText.show()
+        self.ui.badTextFrame.hide()
+      elif quality is MEATQUALITY.MEDIUM:
+        self.ui.goodTextFrame.hide()
+        self.ui.mediumText.hide()
+        self.ui.badTextFrame.show()
+      else:
+        self.ui.goodTextFrame.hide()
+        self.ui.mediumText.hide()
+        self.ui.badTextFrame.hide()
     else:
-      self.ui.detectionIndikatorLayout.hide()
-      self.ui.meatQualityText.setText(QCoreApplication.translate("MainView", u"<html><head/><body><p></p></body></html>", None))
+      self.ui.detectionIndicatorFrame.hide()
+      self.ui.goodTextFrame.hide()
+      self.ui.mediumText.hide()
+      self.ui.badTextFrame.hide()
   # ===================================================================================================================================================
 
   def onPauseCamera(self):
@@ -108,9 +131,9 @@ class View(QMainWindow):
 
   def onModeChange(self, value):
     if value=='Verbose':
-      self.ui.verboseModeLayout.show()
-      self.ui.defaultModeLayout.hide()
+      self.ui.verboseModeFrame.show()
+      self.ui.defaultModeFrame.hide()
     else:
-      self.ui.verboseModeLayout.hide()
-      self.ui.defaultModeLayout.show()
+      self.ui.verboseModeFrame.hide()
+      self.ui.defaultModeFrame.show()
     self.cameraThread.changeMode(value)
