@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainViewCnRhiQ.ui'
+## Form generated from reading UI file 'MainViewLaybEy.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -93,14 +93,14 @@ class Ui_MainView(object):
 
         self.verboseModeFrame = QFrame(self.centralwidget)
         self.verboseModeFrame.setObjectName(u"verboseModeFrame")
-        self.verboseModeFrame.setGeometry(QRect(0, 0, 801, 541))
+        self.verboseModeFrame.setGeometry(QRect(0, 0, 801, 531))
         self.verboseModeFrame.setFrameShape(QFrame.StyledPanel)
         self.verboseModeFrame.setFrameShadow(QFrame.Raised)
         self.layoutWidget = QWidget(self.verboseModeFrame)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(0, 0, 801, 541))
+        self.layoutWidget.setGeometry(QRect(0, 0, 801, 531))
         self.verboseModeGrid = QGridLayout(self.layoutWidget)
-        self.verboseModeGrid.setSpacing(4)
+        self.verboseModeGrid.setSpacing(2)
         self.verboseModeGrid.setObjectName(u"verboseModeGrid")
         self.verboseModeGrid.setContentsMargins(0, 0, 0, 0)
         self.roiFrame = QLabel(self.layoutWidget)
@@ -134,12 +134,12 @@ class Ui_MainView(object):
 
         self.defaultModeFrame = QFrame(self.centralwidget)
         self.defaultModeFrame.setObjectName(u"defaultModeFrame")
-        self.defaultModeFrame.setGeometry(QRect(0, 0, 801, 541))
+        self.defaultModeFrame.setGeometry(QRect(0, 0, 801, 531))
         self.defaultModeFrame.setFrameShape(QFrame.StyledPanel)
         self.defaultModeFrame.setFrameShadow(QFrame.Raised)
         self.videoOutpuFrame = QLabel(self.defaultModeFrame)
         self.videoOutpuFrame.setObjectName(u"videoOutpuFrame")
-        self.videoOutpuFrame.setGeometry(QRect(0, 0, 801, 541))
+        self.videoOutpuFrame.setGeometry(QRect(0, 0, 801, 531))
         self.videoOutpuFrame.setAutoFillBackground(False)
         self.videoOutpuFrame.setPixmap(QPixmap(u"Resources/camera.png"))
         self.videoOutpuFrame.setScaledContents(False)

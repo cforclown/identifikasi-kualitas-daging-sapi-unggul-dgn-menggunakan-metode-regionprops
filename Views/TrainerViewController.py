@@ -38,6 +38,7 @@ class View(QMainWindow):
     self.ui.resetParamsBtn.clicked.connect(self.onResetParams)
     self.ui.useImgBtn.clicked.connect(self.onUseImage)
     self.ui.useCameraBtn.clicked.connect(self.onUseCamera)
+    self.ui.closeBtn.clicked.connect(self.onCloseClick)
 
     self.ui.lowRedValueTextBtn.clicked.connect(self.onLowRedValueTextBtn)
     self.ui.highRedValueTextBtn.clicked.connect(self.onHighRedValueTextBtn)
@@ -210,3 +211,6 @@ class View(QMainWindow):
   def openImg(self):
     fileUri, _ = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.gif)")
     self.imgProcessingThread.useImg(fileUri)
+
+  def onCloseClick(self):
+    self.close()

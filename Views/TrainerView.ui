@@ -743,7 +743,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="savedParamsFrame">
     <property name="geometry">
      <rect>
       <x>8</x>
@@ -830,6 +830,60 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>HIGH RED [150, 0, 0] [180, 255, 255]</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="commandsFrame">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>670</y>
+      <width>511</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>511</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="commandsLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>8</number>
+      </property>
+      <property name="topMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>8</number>
+      </property>
+      <property name="bottomMargin">
+       <number>8</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="closeBtn">
+        <property name="text">
+         <string> Close</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/delete-button.png</normaloff>Resources/delete-button.png</iconset>
         </property>
        </widget>
       </item>

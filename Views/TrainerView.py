@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'TrainerViewKpVwjr.ui'
+## Form generated from reading UI file 'TrainerViewWqxCKs.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -283,12 +283,12 @@ class Ui_TrainerView(object):
 
         self.paramsControlLayout.addWidget(self.useCameraBtn)
 
-        self.frame = QFrame(self.centralwidget)
-        self.frame.setObjectName(u"frame")
-        self.frame.setGeometry(QRect(8, 364, 511, 91))
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayoutWidget_2 = QWidget(self.frame)
+        self.savedParamsFrame = QFrame(self.centralwidget)
+        self.savedParamsFrame.setObjectName(u"savedParamsFrame")
+        self.savedParamsFrame.setGeometry(QRect(8, 364, 511, 91))
+        self.savedParamsFrame.setFrameShape(QFrame.StyledPanel)
+        self.savedParamsFrame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayoutWidget_2 = QWidget(self.savedParamsFrame)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
         self.horizontalLayoutWidget_2.setGeometry(QRect(0, 0, 511, 91))
         self.horizontalLayout = QHBoxLayout(self.horizontalLayoutWidget_2)
@@ -320,6 +320,26 @@ class Ui_TrainerView(object):
         self.highRedValueTextBtn.setFont(font1)
 
         self.horizontalLayout.addWidget(self.highRedValueTextBtn)
+
+        self.commandsFrame = QFrame(self.centralwidget)
+        self.commandsFrame.setObjectName(u"commandsFrame")
+        self.commandsFrame.setGeometry(QRect(8, 670, 511, 51))
+        self.commandsFrame.setFrameShape(QFrame.StyledPanel)
+        self.commandsFrame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayoutWidget = QWidget(self.commandsFrame)
+        self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
+        self.horizontalLayoutWidget.setGeometry(QRect(0, 0, 511, 51))
+        self.commandsLayout = QHBoxLayout(self.horizontalLayoutWidget)
+        self.commandsLayout.setSpacing(8)
+        self.commandsLayout.setObjectName(u"commandsLayout")
+        self.commandsLayout.setContentsMargins(8, 8, 8, 8)
+        self.closeBtn = QPushButton(self.horizontalLayoutWidget)
+        self.closeBtn.setObjectName(u"closeBtn")
+        icon4 = QIcon()
+        icon4.addFile(u"Resources/delete-button.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon4)
+
+        self.commandsLayout.addWidget(self.closeBtn)
 
         TrainerView.setCentralWidget(self.centralwidget)
 
@@ -356,5 +376,6 @@ class Ui_TrainerView(object):
         self.useCameraBtn.setText(QCoreApplication.translate("TrainerView", u" Use Camera", None))
         self.lowRedValueTextBtn.setText(QCoreApplication.translate("TrainerView", u"LOW RED [0, 0, 0] [30, 255, 255]", None))
         self.highRedValueTextBtn.setText(QCoreApplication.translate("TrainerView", u"HIGH RED [150, 0, 0] [180, 255, 255]", None))
+        self.closeBtn.setText(QCoreApplication.translate("TrainerView", u" Close", None))
     # retranslateUi
 
