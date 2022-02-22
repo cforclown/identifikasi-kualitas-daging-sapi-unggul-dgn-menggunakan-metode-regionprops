@@ -7,7 +7,8 @@ from PySide2.QtGui import QImage
 import cv2
 import numpy as np
 
-from Utils.CameraSettings import CAMERA_SETTINGS
+from Utils.CameraSettings import CAMERA_SETTINGS, getCameraCapture
+from Utils.SettingsManager import Settings
 
 
 
@@ -35,33 +36,34 @@ class CameraThreadWorker(QThread):
     isActive=False
     isPause=True
     isBreak=False
+
     currentFrame=None
-    detectionParams=[
-        [
-            np.array([18, 26, 147]),
-            np.array([100, 120, 255]),
-            35
-        ],
-        [
-            np.array([50, 87, 170]),
-            np.array([180, 255, 255]),
-            35
-        ]
-    ]
+
+    stopped=True
+    cameraPort=Settings().getCameraPort()
+    cameraRes=Settings().getCameraResolution()
+    detectionParams=Settings().getDetectionParams()
     cameraResWidth=0
     cameraResHeight=0
     roi=None
 
     def run(self):
+        print('running')
+        
         self.isActive=True
         self.isPause=False
-        capture = cv2.VideoCapture(CAMERA_SETTINGS.INDEX, cv2.CAP_DSHOW)
+        capture = getCameraCapture(self.cameraPort, self.cameraRes)
         if capture.isOpened(): 
             # get vcap property 
             self.cameraResWidth  = capture.get(cv2.CAP_PROP_FRAME_WIDTH)
             self.cameraResHeight = capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
             print(self.cameraResWidth, self.cameraResHeight)
-            self.roi=ROI(int(self.cameraResWidth/4), int(self.cameraResHeight/4), int(self.cameraResWidth/2), int(self.cameraResHeight/2))
+            self.roi=ROI(
+                int(self.cameraResWidth/4), 
+                int(self.cameraResHeight/4), 
+                int(self.cameraResWidth/2), 
+                int(self.cameraResHeight/2)
+            )
             print(self.roi.x, self.roi.y, self.roi.w, self.roi.h)
         else:
             print('[ERROR] FAILED TO ACCESS CAMERA!')
@@ -93,16 +95,12 @@ class CameraThreadWorker(QThread):
                         self.meatDetected.emit(True)
                     else:
                         self.meatDetected.emit(False)
+
                     if not self.verboseMode:
-                        # filtered = np.asarray(filtered)
-                        # rawFrame[ 
-                        #     self.roi.y:self.roi.y+self.roi.h, 
-                        #     self.roi.x:self.roi.x+self.roi.w
-                        # ] = filtered
                         frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
                         self.currentFrame=frame
                         frameQtFormat = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-                        self.frameUpdate.emit(frameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                        self.frameUpdate.emit(frameQtFormat.scaled(self.cameraRes[0], self.cameraRes[1], Qt.KeepAspectRatio))
                     else:
                         frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
                         self.currentFrame=frame
@@ -125,15 +123,18 @@ class CameraThreadWorker(QThread):
                         filteredFrameQtFormat = QImage(filteredFrame.data, filteredFrame.shape[1], filteredFrame.shape[0], QImage.Format_RGB888)
 
 
-                        self.frameUpdate.emit(frameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                        self.roiUpdate.emit(roiFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                        self.roiMaskUpdate.emit(maskFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
-                        self.filteredUpdate.emit(filteredFrameQtFormat.scaled(640, 480, Qt.KeepAspectRatio))
+                        self.frameUpdate.emit(frameQtFormat.scaled(self.cameraRes[0], self.cameraRes[1], Qt.KeepAspectRatio))
+                        self.roiUpdate.emit(roiFrameQtFormat.scaled(self.cameraRes[0], self.cameraRes[1], Qt.KeepAspectRatio))
+                        self.roiMaskUpdate.emit(maskFrameQtFormat.scaled(self.cameraRes[0], self.cameraRes[1], Qt.KeepAspectRatio))
+                        self.filteredUpdate.emit(filteredFrameQtFormat.scaled(self.cameraRes[0], self.cameraRes[1], Qt.KeepAspectRatio))
             except Exception as e:
                 print(traceback.format_exc())
+        capture.release()
+        capture=None
+        print('[THREAD] CAMERA worker ended')
 
     def changeMode(self, value):
-        self.verboseMode = not self.verboseMode
+        self.verboseMode = True if value=='Verbose' else False
 
     def pause(self):
         self.isPause = True
@@ -147,9 +148,8 @@ class CameraThreadWorker(QThread):
     def endBreak(self):
         self.isBreak = False
 
-    def stop(self):
+    def breakWork(self):
         self.isActive = False
-        self.quit()
 
     def screenshoot(self):
         self.saveFrame()
@@ -174,21 +174,21 @@ class CameraThreadWorker(QThread):
         ]
         hsvFrame=cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
         masks=None
-        for param in self.detectionParams:
-            mask = cv2.inRange(hsvFrame, param[0], param[1])
-            mask = cv2.medianBlur(mask, param[2])
-            masks=(masks+mask) if masks is not None else mask
-        # cv2.imshow('DETECTOR', filteredDetection)
+        for detectionParams in self.detectionParams:
+            mask = cv2.inRange(hsvFrame, tuple(detectionParams[Settings.LOW_HSV_KEY]), tuple(detectionParams[Settings.HIGH_HSV_KEY]))
+            if detectionParams[Settings.BLUR_TYPE_KEY]==Settings.BLUR_TYPE_MEDIAN_BLUR:
+                mask = cv2.medianBlur(mask, detectionParams[Settings.MEDIAN_BLUR_SCALE_KEY])
+            else:
+                mask = cv2.GaussianBlur(mask, tuple([detectionParams[Settings.GAUSSIAN_BLUR_SCALE_KEY], detectionParams[Settings.GAUSSIAN_BLUR_SCALE_KEY]]))
+            masks=masks+mask if masks is not None else mask
 
         contours, _ = cv2.findContours(masks, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         selectedContour=None
-        selectedContourArea=0
         for contour in contours:
             area = cv2.contourArea(contour)
             # print(area)
             if area > 5000:
                 selectedContour=contour
-                selectedContourArea=area
         filtered = cv2.bitwise_and(roi, roi, mask=masks)
 
         return roi, masks, filtered, selectedContour

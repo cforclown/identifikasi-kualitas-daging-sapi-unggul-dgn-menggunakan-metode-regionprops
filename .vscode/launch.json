@@ -19,10 +19,17 @@
       "console": "integratedTerminal"
     },
     {
-      "name": "DEBUG: realtime-trainer",
+      "name": "DEBUG: settings",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/realtime-trainer.py",
+      "program": "${workspaceFolder}/settings.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "DEBUG: test",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/test.py",
       "console": "integratedTerminal"
     }
   ]

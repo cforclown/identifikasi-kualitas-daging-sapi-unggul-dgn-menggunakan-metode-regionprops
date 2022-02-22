@@ -1,24 +1,36 @@
+from time import sleep
 from PySide2.QtWidgets import QMainWindow
 from PySide2.QtGui import QPixmap, QCloseEvent, QShowEvent
-from PySide2.QtCore import QEvent, QCoreApplication
+from PySide2.QtCore import QEvent
 from Utils.CameraThreadWorker import MEATQUALITY, CameraThreadWorker
 from Views.MainView import Ui_MainView
+from Views.SettingsViewController import View as SettingsView
 
 
 class View(QMainWindow):
-  lastWindowEvent=None
+  DEFAULT_MODE='Default'
+  VERBOSE_MODE='Verbose'
 
   def __init__(self):
     super().__init__()
+    
+    self.lastWindowEvent=None
     self.ui = Ui_MainView()
     self.ui.setupUi(self)
     self.installEventFilter(self)
     self.setAcceptDrops(True)
+
+
+    self.currentMode=self.DEFAULT_MODE
     
     self.initialize()
     self.show()
 
   def initialize(self):
+    self.ui.videoModeCb.clear()
+    self.ui.videoModeCb.addItem(self.DEFAULT_MODE)
+    self.ui.videoModeCb.addItem(self.VERBOSE_MODE)
+
     self.ui.videoOutpuFrame.setScaledContents(True)
     self.ui.videoFrame.setScaledContents(True)
     self.ui.roiFrame.setScaledContents(True)
@@ -29,25 +41,44 @@ class View(QMainWindow):
     self.ui.pauseVideoBtn.clicked.connect(self.onPauseCamera)
     self.ui.screenshootBtn.clicked.connect(self.onScreenshoot)
     self.ui.videoModeCb.currentTextChanged.connect(self.onModeChange)
+    self.ui.settingsBtn.clicked.connect(self.onSettingsClick)
 
+    self.initCameraThreadWorker()
+  
+  def initCameraThreadWorker(self):
     self.cameraThread = CameraThreadWorker()
     self.cameraThread.frameUpdate.connect(self.imageUpdateCallback)
     self.cameraThread.roiUpdate.connect(self.roiUpdateCallback)
     self.cameraThread.roiMaskUpdate.connect(self.roiMaskUpdateCallback)
     self.cameraThread.filteredUpdate.connect(self.videoFilteredUpdateCallback)
     self.cameraThread.meatDetected.connect(self.meatDetected)
+    self.cameraThread.changeMode(self.currentMode)
+
+  def startCameraThreadWorker(self):
+    self.cameraThread.start()
   
+  def stopCameraThreadWorker(self):
+    self.cameraThread.breakWork()
+    self.cameraThread.frameUpdate.disconnect()
+    self.cameraThread.roiUpdate.disconnect()
+    self.cameraThread.roiMaskUpdate.disconnect()
+    self.cameraThread.filteredUpdate.disconnect()
+    self.cameraThread.meatDetected.disconnect()
+    self.cameraThread.quit()
+    self.cameraThread.wait()
+    while self.cameraThread.isRunning():
+      sleep(0.1)
+    self.cameraThread=None
+    sleep(0.5)
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
-    print('ON SHOW')
-    self.cameraThread.start()
     self.onResumeCamera()
     self.meatDetected(False)
+    self.startCameraThreadWorker()
 
   def closeEvent(self, event: QCloseEvent) -> None:
-    print('ON CLOSE')
     self.removeEventFilter(self)
-    self.cameraThread.stop()
+    self.stopCameraThreadWorker()
 
   def eventFilter(self, object, event):
     eventAction=False
@@ -55,9 +86,7 @@ class View(QMainWindow):
     if event.type()==QEvent.Type.Move:
       self.cameraThread.startBreak()
       eventAction=True
-      print('ON MOVE')
     elif self.lastWindowEvent==QEvent.Type.Move and event.type()==QEvent.Type.NonClientAreaMouseButtonRelease and self.cameraThread.isBreak:
-      print('ON MOVE STOP')
       self.cameraThread.endBreak()
       eventAction=True
     self.lastWindowEvent=event.type()
@@ -131,10 +160,27 @@ class View(QMainWindow):
     self.ui.displayInfoBtn.setEnabled(True)
 
   def onModeChange(self, value):
-    if value=='Verbose':
+    self.currentMode=value
+    if self.currentMode=='Verbose':
       self.ui.verboseModeFrame.show()
       self.ui.defaultModeFrame.hide()
     else:
       self.ui.verboseModeFrame.hide()
       self.ui.defaultModeFrame.show()
-    self.cameraThread.changeMode(value)
+    self.cameraThread.changeMode(self.currentMode)
+
+  def onSettingsClick(self):
+    self.stopCameraThreadWorker()
+    self.settingsWindow=SettingsView(self.onSettingsClosed)
+    self.ui.controllerGroup.setEnabled(False)
+
+  def onSettingsClosed(self):
+    self.settingsWindow.close()
+    self.settingsWindow.destroy()
+    self.settingsWindow=None
+    self.initCameraThreadWorker()
+    self.startCameraThreadWorker()
+    # self.ui.verboseModeFrame.hide()
+    # self.ui.defaultModeFrame.show()
+    # self.cameraThread.changeMode(False)
+    self.ui.controllerGroup.setEnabled(True)

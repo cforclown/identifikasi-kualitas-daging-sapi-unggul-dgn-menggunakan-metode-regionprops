@@ -131,6 +131,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="displayInfoBtn">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -171,6 +174,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="settingsBtn">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string> Settings</string>
         </property>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainViewrolmVi.ui'
+## Form generated from reading UI file 'MainViewCnRhiQ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -65,6 +65,7 @@ class Ui_MainView(object):
 
         self.displayInfoBtn = QPushButton(self.horizontalLayoutWidget)
         self.displayInfoBtn.setObjectName(u"displayInfoBtn")
+        self.displayInfoBtn.setEnabled(False)
         self.displayInfoBtn.setMinimumSize(QSize(0, 0))
         icon3 = QIcon()
         icon3.addFile(u"Resources/info.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -83,6 +84,7 @@ class Ui_MainView(object):
 
         self.settingsBtn = QPushButton(self.horizontalLayoutWidget)
         self.settingsBtn.setObjectName(u"settingsBtn")
+        self.settingsBtn.setEnabled(True)
         icon4 = QIcon()
         icon4.addFile(u"Resources/cog.png", QSize(), QIcon.Normal, QIcon.Off)
         self.settingsBtn.setIcon(icon4)

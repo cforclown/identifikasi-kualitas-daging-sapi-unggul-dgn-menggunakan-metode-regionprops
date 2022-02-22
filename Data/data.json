@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "camera": 0,
+    "cameraResolution": [
+      640,
+      480
+    ],
+    "detectionParams": [
+      {
+        "lowHSV": [
+          0,
+          0,
+          0
+        ],
+        "highHSV": [
+          10,
+          255,
+          255
+        ],
+        "blurType": 0,
+        "medianBlurScale": 1,
+        "gaussianBlurScale": 49
+      },
+      {
+        "lowHSV": [
+          161,
+          0,
+          0
+        ],
+        "highHSV": [
+          180,
+          255,
+          255
+        ],
+        "blurType": 0,
+        "medianBlurScale": 19,
+        "gaussianBlurScale": 49
+      }
+    ]
+  }
+}
