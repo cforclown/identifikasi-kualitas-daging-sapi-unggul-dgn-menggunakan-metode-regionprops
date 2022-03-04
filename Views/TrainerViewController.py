@@ -51,6 +51,23 @@ class View(QMainWindow):
     self.ui.highVSlider.valueChanged.connect(self.onHighVChange)
     self.ui.noiseReductionParamSlider.valueChanged.connect(self.onMedianBlurScaleChange)
 
+    self.ui.lowRedValueTextBtn.setText('LOW RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][0],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][1],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][2],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][0],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][1],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][2],
+    ))
+    self.ui.highRedValueTextBtn.setText('HIGH RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][0],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][1],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][2],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][0],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][1],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][2],
+    ))
+
     self.initTrainerTreadWorker()
     self.initializeSliders()
 
@@ -72,8 +89,7 @@ class View(QMainWindow):
     self.onMedianBlurScaleChange()
 
   def initTrainerTreadWorker(self):
-    self.imgProcessingThread = TrainerThreadWorker()
-    self.imgProcessingThread.init(self.currentDetectionParams)
+    self.imgProcessingThread = TrainerThreadWorker(self.currentDetectionParams)
     self.imgProcessingThread.imgUpdate.connect(self.imgUpdateCallback)
     self.imgProcessingThread.imgBinUpdate.connect(self.imgBinUpdateCallback)
     self.imgProcessingThread.imgBinEnhancedUpdate.connect(self.imgBinEnhancedUpdateCallback)
@@ -95,7 +111,8 @@ class View(QMainWindow):
       while self.imgProcessingThread.isRunning():
         sleep(0.1)
     self.imgProcessingThread=None
-    sleep(0.5)
+    sleep(1)
+    print('[TRAINER CAM THREAD] released')
 
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
@@ -128,6 +145,20 @@ class View(QMainWindow):
       self.settings.detectionParams[self.currentDetectionParams][Settings.GAUSSIAN_BLUR_SCALE_KEY],
       (True if self.currentDetectionParams is Settings.LOW_RED_KEY else False)
     )
+    valueText = '{0} RED [{1}, {2}, {3}] [{4}, {5}, {6}]\nMEDIAN BLUR SCALE {6}'.format(
+      'LOW' if self.currentDetectionParams is Settings.LOW_RED_KEY else 'HIGH',
+      self.settings.detectionParams[self.currentDetectionParams][Settings.LOW_HSV_KEY][0],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.LOW_HSV_KEY][1],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.LOW_HSV_KEY][2],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.HIGH_HSV_KEY][0],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.HIGH_HSV_KEY][1],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.HIGH_HSV_KEY][2],
+      self.settings.detectionParams[self.currentDetectionParams][Settings.MEDIAN_BLUR_SCALE_KEY],
+    )
+    if self.currentDetectionParams is Settings.LOW_RED_KEY:
+      self.ui.lowRedValueTextBtn.setText(valueText)
+    else:
+      self.ui.highRedValueTextBtn.setText(valueText)
 
   def onResetParams(self):
     self.settings.detectionParams=Settings().get().detectionParams

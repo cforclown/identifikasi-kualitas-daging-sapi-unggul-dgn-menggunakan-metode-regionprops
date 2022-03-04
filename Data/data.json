@@ -18,12 +18,12 @@
           255
         ],
         "blurType": 0,
-        "medianBlurScale": 1,
+        "medianBlurScale": 51,
         "gaussianBlurScale": 49
       },
       {
         "lowHSV": [
-          161,
+          170,
           0,
           0
         ],
@@ -33,7 +33,7 @@
           255
         ],
         "blurType": 0,
-        "medianBlurScale": 19,
+        "medianBlurScale": 51,
         "gaussianBlurScale": 49
       }
     ]

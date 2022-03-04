@@ -22,20 +22,29 @@ class TrainerThreadWorker(QThread):
     imgBinUpdate=Signal(QImage)
     imgBinEnhancedUpdate=Signal(QImage)
 
-    imgUri=None
-    img=None
-    imgRect=None
+    def __init__(self, detectionParams, parent=None):
+        super().__init__(parent)
 
-    stopped=True
-    cameraPort=Settings().getCameraPort()
-    cameraRes=Settings().getCameraResolution()
-    detectionParams=Settings().getDetectionParams()
-    capture=None
+        self.currentDectectionParams=detectionParams
+        
+        self.capture=None
+        self.imgUri=None
+        self.img=None
+        self.imgRect=None
 
-    def init(self, currentDectectionParams):
-        self.currentDectectionParams=currentDectectionParams
+        self.stopped=True
 
+        self.cameraPort=Settings().getCameraPort()
+        self.cameraRes=Settings().getCameraResolution()
+        self.detectionParams=Settings().getDetectionParams()
+        print('=============== TRAINER CAM THREAD ===============')
+        print('cam-port        :', self.cameraPort)
+        print('cam-resolution  :', self.cameraRes)
+        print('detection-params:', self.detectionParams)
+        print('==================================================')
+        
     def run(self):
+        print('[TRAINER CAM THREAD] running')
         self.stopped=False
 
         while self.stopped is False:
@@ -70,7 +79,7 @@ class TrainerThreadWorker(QThread):
                 print(traceback.format_exc())
         self.capture.release()
         self.capture=None
-        print('[THREAD] TRAINER worker ended')
+        print('[TRAINER CAM THREAD] stopped')
 
     def breakWork(self):
         self.stopped = True
@@ -90,9 +99,7 @@ class TrainerThreadWorker(QThread):
         else:
             if self.capture is None:
                 self.capture = getCameraCapture(self.cameraPort, self.cameraRes)
-                if self.capture.isOpened(): 
-                    print('CAM INITIALIZED', self.cameraPort)
-                else:
+                if not self.capture.isOpened():
                     print('[ERROR] FAILED TO ACCESS CAMERA!')
             return self.capture.read()
 

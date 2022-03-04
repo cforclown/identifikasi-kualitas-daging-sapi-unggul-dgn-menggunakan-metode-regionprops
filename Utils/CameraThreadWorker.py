@@ -30,25 +30,35 @@ class CameraThreadWorker(QThread):
     roiMaskUpdate=Signal(QImage)
     filteredUpdate=Signal(QImage)
     meatDetected=Signal(bool)
-    screenshootDir=os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
-    
-    verboseMode=False
-    isActive=False
-    isPause=True
-    isBreak=False
 
-    currentFrame=None
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        self.screenshootDir=os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+        
+        self.verboseMode=False
+        self.isActive=False
+        self.isPause=True
+        self.isBreak=False
+        self.stopped=True
 
-    stopped=True
-    cameraPort=Settings().getCameraPort()
-    cameraRes=Settings().getCameraResolution()
-    detectionParams=Settings().getDetectionParams()
-    cameraResWidth=0
-    cameraResHeight=0
-    roi=None
+        self.currentFrame=None
+
+        self.cameraPort=Settings().getCameraPort()
+        self.cameraRes=Settings().getCameraResolution()
+        self.detectionParams=Settings().getDetectionParams()
+        print('=================== CAM THREAD ===================')
+        print('cam-port        :', self.cameraPort)
+        print('cam-resolution  :', self.cameraRes)
+        print('detection-params:', self.detectionParams)
+        print('==================================================')
+
+        self.cameraResWidth=0
+        self.cameraResHeight=0
+        self.roi=None
 
     def run(self):
-        print('running')
+        print('[CAM THREAD] running')
         
         self.isActive=True
         self.isPause=False
@@ -57,14 +67,12 @@ class CameraThreadWorker(QThread):
             # get vcap property 
             self.cameraResWidth  = capture.get(cv2.CAP_PROP_FRAME_WIDTH)
             self.cameraResHeight = capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-            print(self.cameraResWidth, self.cameraResHeight)
             self.roi=ROI(
                 int(self.cameraResWidth/4), 
                 int(self.cameraResHeight/4), 
                 int(self.cameraResWidth/2), 
                 int(self.cameraResHeight/2)
             )
-            print(self.roi.x, self.roi.y, self.roi.w, self.roi.h)
         else:
             print('[ERROR] FAILED TO ACCESS CAMERA!')
             return
@@ -131,7 +139,7 @@ class CameraThreadWorker(QThread):
                 print(traceback.format_exc())
         capture.release()
         capture=None
-        print('[THREAD] CAMERA worker ended')
+        print('[CAM THREAD] stopped')
 
     def changeMode(self, value):
         self.verboseMode = True if value=='Verbose' else False

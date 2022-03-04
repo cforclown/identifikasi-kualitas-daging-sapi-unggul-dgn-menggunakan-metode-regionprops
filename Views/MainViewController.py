@@ -20,7 +20,6 @@ class View(QMainWindow):
     self.installEventFilter(self)
     self.setAcceptDrops(True)
 
-
     self.currentMode=self.DEFAULT_MODE
     
     self.initialize()
@@ -69,7 +68,8 @@ class View(QMainWindow):
     while self.cameraThread.isRunning():
       sleep(0.1)
     self.cameraThread=None
-    sleep(0.5)
+    sleep(1)
+    print('[TRAINER CAM THREAD] released')
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
     self.onResumeCamera()
