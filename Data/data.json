@@ -8,27 +8,27 @@
     "detectionParams": [
       {
         "lowHSV": [
-          0,
+          14,
           0,
           0
         ],
         "highHSV": [
-          10,
+          39,
           255,
           255
         ],
         "blurType": 0,
-        "medianBlurScale": 51,
+        "medianBlurScale": 57,
         "gaussianBlurScale": 49
       },
       {
         "lowHSV": [
-          170,
+          3,
           0,
           0
         ],
         "highHSV": [
-          180,
+          37,
           255,
           255
         ],

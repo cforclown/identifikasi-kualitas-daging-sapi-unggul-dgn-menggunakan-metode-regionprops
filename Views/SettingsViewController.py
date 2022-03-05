@@ -41,25 +41,26 @@ class View(QMainWindow):
         self.ui.cameraResCb.setCurrentText(resName)
     self.ui.cameraResCb.currentTextChanged.connect(self.onCameraResChange)
 
-    self.ui.medianBlurParamValueText.setText(str(self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.MEDIAN_BLUR_SCALE_KEY]))
     self.ui.lowRedValueText.setText(
-      'LOW RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+      'LOW RED [{0}, {1}, {2}] [{3}, {4}, {5}]\nMEDIAN BLUR SCALE {6}'.format(
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][0],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][1],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][2],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][0],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][1],
-        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][2]
+        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][2],
+        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.LOW_RED_KEY][Settings.MEDIAN_BLUR_SCALE_KEY],
       )
     )
     self.ui.highRedValueText.setText(
-      'HIGH RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+      'HIGH RED [{0}, {1}, {2}] [{3}, {4}, {5}]\nMEDIAN BLUR SCALE {6}'.format(
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][0],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][1],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][2],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][0],
         self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][1],
-        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][2]
+        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][2],
+        self.settings[Settings.DETECTION_PARAMS_KEY][Settings.HIGH_RED_KEY][Settings.MEDIAN_BLUR_SCALE_KEY],
       )
     )
 

@@ -51,21 +51,23 @@ class View(QMainWindow):
     self.ui.highVSlider.valueChanged.connect(self.onHighVChange)
     self.ui.noiseReductionParamSlider.valueChanged.connect(self.onMedianBlurScaleChange)
 
-    self.ui.lowRedValueTextBtn.setText('LOW RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+    self.ui.lowRedValueTextBtn.setText('LOW RED [{0}, {1}, {2}] [{3}, {4}, {5}]\nMEDIAN BLUR SCALE {6}'.format(
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][0],
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][1],
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.LOW_HSV_KEY][2],
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][0],
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][1],
       self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.HIGH_HSV_KEY][2],
+      self.settings.detectionParams[Settings.LOW_RED_KEY][Settings.MEDIAN_BLUR_SCALE_KEY]
     ))
-    self.ui.highRedValueTextBtn.setText('HIGH RED [{0}, {1}, {2}] [{3}, {4}, {5}]'.format(
+    self.ui.highRedValueTextBtn.setText('HIGH RED [{0}, {1}, {2}] [{3}, {4}, {5}]\nMEDIAN BLUR SCALE {6}'.format(
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][0],
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][1],
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.LOW_HSV_KEY][2],
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][0],
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][1],
       self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.HIGH_HSV_KEY][2],
+      self.settings.detectionParams[Settings.HIGH_RED_KEY][Settings.MEDIAN_BLUR_SCALE_KEY]
     ))
 
     self.initTrainerTreadWorker()
@@ -145,7 +147,7 @@ class View(QMainWindow):
       self.settings.detectionParams[self.currentDetectionParams][Settings.GAUSSIAN_BLUR_SCALE_KEY],
       (True if self.currentDetectionParams is Settings.LOW_RED_KEY else False)
     )
-    valueText = '{0} RED [{1}, {2}, {3}] [{4}, {5}, {6}]\nMEDIAN BLUR SCALE {6}'.format(
+    valueText = '{0} RED [{1}, {2}, {3}] [{4}, {5}, {6}]\nMEDIAN BLUR SCALE {7}'.format(
       'LOW' if self.currentDetectionParams is Settings.LOW_RED_KEY else 'HIGH',
       self.settings.detectionParams[self.currentDetectionParams][Settings.LOW_HSV_KEY][0],
       self.settings.detectionParams[self.currentDetectionParams][Settings.LOW_HSV_KEY][1],

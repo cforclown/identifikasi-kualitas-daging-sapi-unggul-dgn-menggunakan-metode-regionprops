@@ -84,10 +84,10 @@ class View(QMainWindow):
     eventAction=False
 
     if event.type()==QEvent.Type.Move:
-      self.cameraThread.startBreak()
+      self.cameraThread.halt()
       eventAction=True
     elif self.lastWindowEvent==QEvent.Type.Move and event.type()==QEvent.Type.NonClientAreaMouseButtonRelease and self.cameraThread.isBreak:
-      self.cameraThread.endBreak()
+      self.cameraThread.unhalt()
       eventAction=True
     self.lastWindowEvent=event.type()
 
@@ -96,15 +96,23 @@ class View(QMainWindow):
 
   # =============================================================== CAMERA WORKER EVENTs ==============================================================
   def imageUpdateCallback(self, frame):
+    if self.cameraThread is None:
+      pass
     if not self.cameraThread.verboseMode:
       self.ui.videoOutpuFrame.setPixmap(QPixmap.fromImage(frame))
     else:
       self.ui.videoFrame.setPixmap(QPixmap.fromImage(frame))
   def roiUpdateCallback(self, frame):
+    if self.cameraThread is None:
+      pass
     self.ui.roiFrame.setPixmap(QPixmap.fromImage(frame))
   def roiMaskUpdateCallback(self, frame):
+    if self.cameraThread is None:
+      pass
     self.ui.roiMaskFrame.setPixmap(QPixmap.fromImage(frame))
   def videoFilteredUpdateCallback(self, frame):
+    if self.cameraThread is None:
+      pass
     self.ui.videoFilteredFrame.setPixmap(QPixmap.fromImage(frame))
   
   def meatDetected(self, isDetected, quality=MEATQUALITY.GOOD):
@@ -142,7 +150,7 @@ class View(QMainWindow):
 
   def onResumeCamera(self):
     self.cameraThread.resume()
-    self.cameraThread.endBreak()
+    self.cameraThread.unhalt()
     self.ui.startVideoBtn.setEnabled(False)
     self.ui.pauseVideoBtn.setEnabled(True)
     self.ui.screenshootBtn.setEnabled(True)
