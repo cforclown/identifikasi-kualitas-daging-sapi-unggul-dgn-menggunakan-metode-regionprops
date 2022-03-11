@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainViewLaybEy.ui'
+## Form generated from reading UI file 'MainViewPUOKEY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -175,6 +175,7 @@ class Ui_MainView(object):
         font.setBold(True)
         font.setWeight(75)
         self.badText.setFont(font)
+        self.badText.setStyleSheet(u"color: rgb(255, 0, 0);")
         self.badText.setFrameShape(QFrame.NoFrame)
         self.badText.setTextFormat(Qt.AutoText)
         self.badText.setAlignment(Qt.AlignRight|Qt.AlignTop|Qt.AlignTrailing)
@@ -187,6 +188,7 @@ class Ui_MainView(object):
         self.goodText.setObjectName(u"goodText")
         self.goodText.setGeometry(QRect(0, 0, 100, 25))
         self.goodText.setFont(font)
+        self.goodText.setStyleSheet(u"color: rgb(85, 255, 0);")
         self.goodText.setFrameShape(QFrame.NoFrame)
         self.goodText.setTextFormat(Qt.AutoText)
         self.goodText.setAlignment(Qt.AlignRight|Qt.AlignTop|Qt.AlignTrailing)
@@ -199,6 +201,7 @@ class Ui_MainView(object):
         self.mediumText.setObjectName(u"mediumText")
         self.mediumText.setGeometry(QRect(0, 0, 100, 25))
         self.mediumText.setFont(font)
+        self.mediumText.setStyleSheet(u"color: rgb(0, 170, 255);")
         self.mediumText.setFrameShape(QFrame.NoFrame)
         self.mediumText.setTextFormat(Qt.AutoText)
         self.mediumText.setAlignment(Qt.AlignRight|Qt.AlignTop|Qt.AlignTrailing)
@@ -223,8 +226,8 @@ class Ui_MainView(object):
         self.settingsBtn.setText(QCoreApplication.translate("MainView", u" Settings", None))
         self.videoOutpuFrame.setText("")
         self.detectionIndicator.setText("")
-        self.badText.setText(QCoreApplication.translate("MainView", u"<html><head/><body><p><span style=\" font-weight:600; color:#ff0000;\">BAD</span></p></body></html>", None))
-        self.goodText.setText(QCoreApplication.translate("MainView", u"<html><head/><body><p><span style=\" font-weight:600; color:#00df00;\">GOOD</span></p></body></html>", None))
-        self.mediumText.setText(QCoreApplication.translate("MainView", u"<html><head/><body><p><span style=\" font-weight:600; color:#00df00;\">MEDIUM</span></p></body></html>", None))
+        self.badText.setText(QCoreApplication.translate("MainView", u"BAD", None))
+        self.goodText.setText(QCoreApplication.translate("MainView", u"GOOD", None))
+        self.mediumText.setText(QCoreApplication.translate("MainView", u"MEDIUM", None))
     # retranslateUi
 

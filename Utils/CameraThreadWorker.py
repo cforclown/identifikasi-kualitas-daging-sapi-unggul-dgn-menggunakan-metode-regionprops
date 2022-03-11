@@ -29,7 +29,7 @@ class CameraThreadWorker(QThread):
     roiUpdate=Signal(QImage)
     roiMaskUpdate=Signal(QImage)
     filteredUpdate=Signal(QImage)
-    meatDetected=Signal(bool)
+    meatDetected=Signal(bool, tuple)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -83,7 +83,7 @@ class CameraThreadWorker(QThread):
             try:
                 ret, rawFrame = capture.read()
                 if ret:
-                    roi, mask, filtered, contour = self.detect(rawFrame)
+                    roi, mask, filtered, contour, quality = self.detect(rawFrame)
                     cv2.rectangle(
                         rawFrame, 
                         (self.roi.x, self.roi.y), 
@@ -100,9 +100,9 @@ class CameraThreadWorker(QThread):
                             (75, 255, 75), 
                             2
                         )
-                        self.meatDetected.emit(True)
+                        self.meatDetected.emit(True, quality)
                     else:
-                        self.meatDetected.emit(False)
+                        self.meatDetected.emit(False, (0, 0))
 
                     if not self.verboseMode:
                         frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
@@ -198,40 +198,33 @@ class CameraThreadWorker(QThread):
             if area > 5000:
                 selectedContour=contour
         filtered = cv2.bitwise_and(roi, roi, mask=masks)
-
-        # _, _, w, h = cv2.boundingRect(selectedContour)
-        # mask = np.zeros([w, h], np.uint8)
-        # cv2.drawContours(mask, selectedContour, -1, 255, -1)
-
-        # self.checkQuality(selectedContour)
-
-        return roi, masks, filtered, selectedContour
-    
-    def checkQuality(self, contour):
-        _, _, w, h = cv2.boundingRect(contour)
-        mask = np.zeros([w, h], np.uint8)
-        cv2.drawContours(mask, contour, -1, 255, -1)
-        meanRgb = cv2.mean(contour, mask=mask)
-        print(meanRgb)
-
-    def RGB2HSV(r, g, b):
-        r, g, b = r/255.0, g/255.0, b/255.0
-        mx = max(r, g, b)
-        mn = min(r, g, b)
-        df = mx-mn
-        if mx == mn:
-            h = 0
-        elif mx == r:
-            h = (60 * ((g-b)/df) + 360) % 360
-        elif mx == g:
-            h = (60 * ((b-r)/df) + 120) % 360
-        elif mx == b:
-            h = (60 * ((r-g)/df) + 240) % 360
-        if mx == 0:
-            s = 0
-        else:
-            s = (df/mx)*100
         
-        v = mx*100
+        freshness=0
+        quality=0
+        if selectedContour is not None:
+            freshness, quality=self.checkQuality(selectedContour, filtered)
 
-        return h, s, v
+        return roi, masks, filtered, selectedContour, (freshness, quality)
+    
+    def checkQuality(self, contour, filteredFrame):
+        x, y, w, h = cv2.boundingRect(contour)
+        hsvFrame=cv2.cvtColor(filteredFrame, cv2.COLOR_BGR2HSV)
+        roi=hsvFrame[y:h, x:w]
+        
+        sTotal=0
+        vTotal=0
+        pixelCount=0
+        for y in range(0, roi.shape[1]):
+            for x in range(0, roi.shape[0]):
+                pixel=roi[x, y]
+                pixelS=pixel[1]
+                pixelV=pixel[0]
+                if pixel is not None and pixelS!=0 and pixelV!=0:
+                    # print(pixel)
+                    pixelCount=pixelCount+1
+                    sTotal=sTotal+pixelS
+                    vTotal=vTotal+pixelV
+        if pixelCount is not 0:
+            return sTotal/pixelCount/255*100, vTotal/pixelCount/255*100
+        else:
+            return 0, 0

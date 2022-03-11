@@ -73,7 +73,7 @@ class View(QMainWindow):
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
     self.onResumeCamera()
-    self.meatDetected(False)
+    self.meatDetected(False, (0, 0))
     self.startCameraThreadWorker()
 
   def closeEvent(self, event: QCloseEvent) -> None:
@@ -115,29 +115,35 @@ class View(QMainWindow):
       pass
     self.ui.videoFilteredFrame.setPixmap(QPixmap.fromImage(frame))
   
-  def meatDetected(self, isDetected, quality=MEATQUALITY.GOOD):
+  def meatDetected(self, isDetected, value):
+    freshness, quality = value
+    quality=round((freshness if freshness>quality else quality), 2)
+    qualityText="{} %".format(quality)
     if isDetected:
       self.ui.detectionIndicatorFrame.show()
-      if quality is MEATQUALITY.GOOD:
+      if quality>80:
+        self.ui.goodText.setText(qualityText)
         self.ui.goodTextFrame.show()
-        self.ui.mediumText.hide()
+        self.ui.mediumTextFrame.hide()
         self.ui.badTextFrame.hide()
-      elif quality is MEATQUALITY.MEDIUM:
+      elif quality>50:
         self.ui.goodTextFrame.hide()
-        self.ui.mediumText.show()
+        self.ui.mediumTextFrame.show()
+        self.ui.mediumText.setText(qualityText)
         self.ui.badTextFrame.hide()
-      elif quality is MEATQUALITY.MEDIUM:
+      elif quality>25:
         self.ui.goodTextFrame.hide()
-        self.ui.mediumText.hide()
+        self.ui.mediumTextFrame.hide()
         self.ui.badTextFrame.show()
+        self.ui.badText.setText(qualityText)
       else:
         self.ui.goodTextFrame.hide()
-        self.ui.mediumText.hide()
+        self.ui.mediumTextFrame.hide()
         self.ui.badTextFrame.hide()
     else:
       self.ui.detectionIndicatorFrame.hide()
       self.ui.goodTextFrame.hide()
-      self.ui.mediumText.hide()
+      self.ui.mediumTextFrame.hide()
       self.ui.badTextFrame.hide()
   # ===================================================================================================================================================
 
@@ -188,7 +194,4 @@ class View(QMainWindow):
     self.settingsWindow=None
     self.initCameraThreadWorker()
     self.startCameraThreadWorker()
-    # self.ui.verboseModeFrame.hide()
-    # self.ui.defaultModeFrame.show()
-    # self.cameraThread.changeMode(False)
     self.ui.controllerGroup.setEnabled(True)
