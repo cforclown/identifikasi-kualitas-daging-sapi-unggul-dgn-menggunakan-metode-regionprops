@@ -1,4 +1,5 @@
 from time import sleep
+import traceback
 from PySide2.QtWidgets import QMainWindow
 from PySide2.QtGui import QPixmap, QCloseEvent, QShowEvent
 from PySide2.QtCore import QEvent
@@ -51,6 +52,7 @@ class View(QMainWindow):
     self.cameraThread.roiMaskUpdate.connect(self.roiMaskUpdateCallback)
     self.cameraThread.filteredUpdate.connect(self.videoFilteredUpdateCallback)
     self.cameraThread.meatDetected.connect(self.meatDetected)
+    self.cameraThread.detectedQuality.connect(self.detectedQuality)
     self.cameraThread.changeMode(self.currentMode)
 
   def startCameraThreadWorker(self):
@@ -63,6 +65,7 @@ class View(QMainWindow):
     self.cameraThread.roiMaskUpdate.disconnect()
     self.cameraThread.filteredUpdate.disconnect()
     self.cameraThread.meatDetected.disconnect()
+    self.cameraThread.detectedQuality.disconnect()
     self.cameraThread.quit()
     self.cameraThread.wait()
     while self.cameraThread.isRunning():
@@ -73,7 +76,7 @@ class View(QMainWindow):
   # ====================================================================== EVENT ======================================================================
   def showEvent(self, event: QShowEvent):
     self.onResumeCamera()
-    self.meatDetected(False, (0, 0))
+    self.meatDetected(False)
     self.startCameraThreadWorker()
 
   def closeEvent(self, event: QCloseEvent) -> None:
@@ -96,12 +99,15 @@ class View(QMainWindow):
 
   # =============================================================== CAMERA WORKER EVENTs ==============================================================
   def imageUpdateCallback(self, frame):
-    if self.cameraThread is None:
-      pass
-    if not self.cameraThread.verboseMode:
-      self.ui.videoOutpuFrame.setPixmap(QPixmap.fromImage(frame))
-    else:
-      self.ui.videoFrame.setPixmap(QPixmap.fromImage(frame))
+    try:
+      if self.cameraThread is None:
+        return
+      if not self.cameraThread.verboseMode:
+        self.ui.videoOutpuFrame.setPixmap(QPixmap.fromImage(frame))
+      else:
+        self.ui.videoFrame.setPixmap(QPixmap.fromImage(frame))
+    except Exception as e:
+        print(traceback.format_exc())
   def roiUpdateCallback(self, frame):
     if self.cameraThread is None:
       pass
@@ -115,33 +121,59 @@ class View(QMainWindow):
       pass
     self.ui.videoFilteredFrame.setPixmap(QPixmap.fromImage(frame))
   
-  def meatDetected(self, isDetected, value):
+  def meatDetected(self, isDetected):
+    if isDetected:
+      self.ui.detectionIndicatorFrame.show()
+    #   if quality>80:
+    #     self.ui.goodText.setText(qualityText)
+    #     self.ui.goodTextFrame.show()
+    #     self.ui.mediumTextFrame.hide()
+    #     self.ui.badTextFrame.hide()
+    #   elif quality>50:
+    #     self.ui.goodTextFrame.hide()
+    #     self.ui.mediumTextFrame.show()
+    #     self.ui.mediumText.setText(qualityText)
+    #     self.ui.badTextFrame.hide()
+    #   elif quality>25:
+    #     self.ui.goodTextFrame.hide()
+    #     self.ui.mediumTextFrame.hide()
+    #     self.ui.badTextFrame.show()
+    #     self.ui.badText.setText(qualityText)
+    #   else:
+    #     self.ui.goodTextFrame.hide()
+    #     self.ui.mediumTextFrame.hide()
+    #     self.ui.badTextFrame.hide()
+    # else:
+    #   self.ui.detectionIndicatorFrame.hide()
+    #   self.ui.goodTextFrame.hide()
+    #   self.ui.mediumTextFrame.hide()
+    #   self.ui.badTextFrame.hide()
+
+  def detectedQuality(self, value):
+    if value is None:
+      self.ui.goodTextFrame.hide()
+      self.ui.mediumTextFrame.hide()
+      self.ui.badTextFrame.hide()
+      return
     freshness, quality = value
     quality=round((freshness if freshness>quality else quality), 2)
     qualityText="{} %".format(quality)
-    if isDetected:
-      self.ui.detectionIndicatorFrame.show()
-      if quality>80:
-        self.ui.goodText.setText(qualityText)
-        self.ui.goodTextFrame.show()
-        self.ui.mediumTextFrame.hide()
-        self.ui.badTextFrame.hide()
-      elif quality>50:
-        self.ui.goodTextFrame.hide()
-        self.ui.mediumTextFrame.show()
-        self.ui.mediumText.setText(qualityText)
-        self.ui.badTextFrame.hide()
-      elif quality>25:
-        self.ui.goodTextFrame.hide()
-        self.ui.mediumTextFrame.hide()
-        self.ui.badTextFrame.show()
-        self.ui.badText.setText(qualityText)
-      else:
-        self.ui.goodTextFrame.hide()
-        self.ui.mediumTextFrame.hide()
-        self.ui.badTextFrame.hide()
+    if quality>80:
+      self.ui.goodText.setText(qualityText)
+      self.ui.goodTextFrame.show()
+      self.ui.mediumTextFrame.hide()
+      self.ui.badTextFrame.hide()
+    elif quality>50:
+      self.ui.goodTextFrame.hide()
+      self.ui.mediumTextFrame.show()
+      self.ui.mediumText.setText(qualityText)
+      self.ui.badTextFrame.hide()
+    elif quality>25:
+      self.ui.goodTextFrame.hide()
+      self.ui.mediumTextFrame.hide()
+      self.ui.badTextFrame.show()
+      self.ui.badText.setText(qualityText)
     else:
-      self.ui.detectionIndicatorFrame.hide()
       self.ui.goodTextFrame.hide()
       self.ui.mediumTextFrame.hide()
       self.ui.badTextFrame.hide()

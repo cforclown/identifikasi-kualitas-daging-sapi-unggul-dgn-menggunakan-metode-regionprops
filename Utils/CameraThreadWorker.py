@@ -1,4 +1,5 @@
 import os
+from time import sleep
 import traceback
 from enum import Enum
 from datetime import datetime
@@ -8,6 +9,7 @@ import cv2
 import numpy as np
 
 from Utils.CameraSettings import CAMERA_SETTINGS, getCameraCapture
+from Utils.QualityThreadWorker import QualityThreadWorker
 from Utils.SettingsManager import Settings
 
 
@@ -29,7 +31,9 @@ class CameraThreadWorker(QThread):
     roiUpdate=Signal(QImage)
     roiMaskUpdate=Signal(QImage)
     filteredUpdate=Signal(QImage)
-    meatDetected=Signal(bool, tuple)
+    meatDetected=Signal(bool)
+    detectedQuality=Signal(tuple)
+    qualityThread=QualityThreadWorker()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -100,9 +104,12 @@ class CameraThreadWorker(QThread):
                             (75, 255, 75), 
                             2
                         )
-                        self.meatDetected.emit(True, quality)
+                        self.meatDetected.emit(True)
                     else:
-                        self.meatDetected.emit(False, (0, 0))
+                        self.meatDetected.emit(False)
+
+                    if self.qualityThread.result is not None:
+                        self.detectedQuality.emit(self.qualityThread.getResult());
 
                     if not self.verboseMode:
                         frame = cv2.flip(cv2.cvtColor(rawFrame, cv2.COLOR_BGR2RGB), 1)
@@ -158,6 +165,11 @@ class CameraThreadWorker(QThread):
 
     def breakWork(self):
         self.isActive = False
+        self.qualityThread.quit()
+        self.qualityThread.wait()
+        while self.qualityThread.isRunning():
+          sleep(0.1)
+        self.qualityThread=None
 
     def screenshoot(self):
         self.saveFrame()
@@ -201,30 +213,8 @@ class CameraThreadWorker(QThread):
         
         freshness=0
         quality=0
-        if selectedContour is not None:
-            freshness, quality=self.checkQuality(selectedContour, filtered)
+        if selectedContour is not None and self.qualityThread.processing is False and self.qualityThread.result is None:
+            self.qualityThread.init(selectedContour, filtered)
+            self.qualityThread.start();
 
         return roi, masks, filtered, selectedContour, (freshness, quality)
-    
-    def checkQuality(self, contour, filteredFrame):
-        x, y, w, h = cv2.boundingRect(contour)
-        hsvFrame=cv2.cvtColor(filteredFrame, cv2.COLOR_BGR2HSV)
-        roi=hsvFrame[y:h, x:w]
-        
-        sTotal=0
-        vTotal=0
-        pixelCount=0
-        for y in range(0, roi.shape[1]):
-            for x in range(0, roi.shape[0]):
-                pixel=roi[x, y]
-                pixelS=pixel[1]
-                pixelV=pixel[0]
-                if pixel is not None and pixelS!=0 and pixelV!=0:
-                    # print(pixel)
-                    pixelCount=pixelCount+1
-                    sTotal=sTotal+pixelS
-                    vTotal=vTotal+pixelV
-        if pixelCount is not 0:
-            return sTotal/pixelCount/255*100, vTotal/pixelCount/255*100
-        else:
-            return 0, 0
