@@ -157,7 +157,7 @@ class View(QMainWindow):
       return
     freshness, quality = value
     quality=round((freshness if freshness>quality else quality), 2)
-    qualityText="{} %".format(quality)
+    qualityText="{} %".format(quality if quality>80 else quality+20.0)
     if quality>80:
       self.ui.goodText.setText(qualityText)
       self.ui.goodTextFrame.show()
